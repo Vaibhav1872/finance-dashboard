@@ -61,10 +61,12 @@ It supports role-based access control and financial data management.
 - Admin → Full control
 
 ---
-
+### 🔹 summary
 <img width="1919" height="906" alt="image" src="https://github.com/user-attachments/assets/33ac7bb1-c2dd-4089-a1ca-2b99f5a0c472" />
 
-<img width="1918" height="970" alt="image" src="https://github.com/user-attachments/assets/ca691814-0f90-4cac-9b31-c6e139d840ad" />
+### 🔹 Records
+
+<img width="1905" height="968" alt="image" src="https://github.com/user-attachments/assets/d6225bf1-79a0-4585-b4f9-38241bec458f" />
 
 
 
