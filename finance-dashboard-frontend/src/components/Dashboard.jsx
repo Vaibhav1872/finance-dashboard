@@ -11,6 +11,12 @@ function Dashboard({ setLoggedIn }) {
     balance: 0
   });
 
+  // ✅ FILTER STATES
+  const [filterType, setFilterType] = useState("");
+  const [filterCategory, setFilterCategory] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+
   const [amount, setAmount] = useState("");
   const [category, setCategory] = useState("");
   const [type, setType] = useState("EXPENSE");
@@ -24,33 +30,43 @@ function Dashboard({ setLoggedIn }) {
 
   const role = localStorage.getItem("role");
 
-  // ✅ FETCH RECORDS (ALL ROLES)
+  // ✅ FETCH DATA
   const fetchData = () => {
     API.get("/records")
       .then(res => setRecords(res.data))
-      .catch(err => {
-        alert(err.response?.data || "Error fetching records");
-      });
+      .catch(err => alert(err.response?.data || "Error fetching records"));
   };
 
-  // ✅ FETCH SUMMARY (ONLY ANALYST + ADMIN)
   const fetchSummary = () => {
     API.get("/dashboard/summary")
       .then(res => setSummary(res.data))
-      .catch(err => {
-        alert(err.response?.data || "Error fetching summary");
-      });
+      .catch(err => alert(err.response?.data || "Error fetching summary"));
   };
 
-  // ✅ ROLE BASED LOAD
+  // ✅ FILTER FUNCTIONS (FIXED POSITION)
+  const filterByType = () => {
+    API.get(`/records/filter/type?type=${filterType}`)
+      .then(res => setRecords(res.data))
+      .catch(() => alert("Filter failed"));
+  };
+
+  const filterByCategory = () => {
+    API.get(`/records/filter/category?category=${filterCategory}`)
+      .then(res => setRecords(res.data))
+      .catch(() => alert("Filter failed"));
+  };
+
+  const filterByDate = () => {
+    API.get(`/records/filter/date?start=${startDate}&end=${endDate}`)
+      .then(res => setRecords(res.data))
+      .catch(() => alert("Filter failed"));
+  };
+
   useEffect(() => {
-
-    fetchData(); // all roles
-
+    fetchData();
     if (role === "ROLE_ANALYST" || role === "ROLE_ADMIN") {
       fetchSummary();
     }
-
   }, []);
 
   // ✅ ADD / UPDATE
@@ -68,42 +84,30 @@ function Dashboard({ setLoggedIn }) {
       notes
     };
 
-    if (editId) {
-      API.put(`/records/${editId}`, data)
-        .then(() => {
-          setEditId(null);
-          fetchData();
-          if (role !== "ROLE_VIEWER") fetchSummary();
-        })
-        .catch(err => {
-          alert(err.response?.data || "Update failed");
-        });
-    } else {
-      API.post("/records", data)
-        .then(() => {
-          fetchData();
-          if (role !== "ROLE_VIEWER") fetchSummary();
-        })
-        .catch(err => {
-          alert(err.response?.data || "Create failed");
-        });
-    }
+    const request = editId
+      ? API.put(`/records/${editId}`, data)
+      : API.post("/records", data);
+
+    request
+      .then(() => {
+        setEditId(null);
+        fetchData();
+        if (role !== "ROLE_VIEWER") fetchSummary();
+      })
+      .catch(err => alert(err.response?.data || "Operation failed"));
 
     setAmount("");
     setCategory("");
     setNotes("");
   };
 
-  // ✅ DELETE
   const deleteRecord = (id) => {
     API.delete(`/records/${id}`)
       .then(() => {
         fetchData();
         if (role !== "ROLE_VIEWER") fetchSummary();
       })
-      .catch(err => {
-        alert(err.response?.data || "Delete failed");
-      });
+      .catch(err => alert(err.response?.data || "Delete failed"));
   };
 
   const editRecord = (r) => {
@@ -114,7 +118,6 @@ function Dashboard({ setLoggedIn }) {
     setNotes(r.notes);
   };
 
-  // ✅ CREATE USER (ADMIN)
   const createUser = () => {
     API.post("/admin/users", {
       username: newUsername,
@@ -127,9 +130,7 @@ function Dashboard({ setLoggedIn }) {
         setNewUsername("");
         setNewPassword("");
       })
-      .catch(err => {
-        alert(err.response?.data || "User creation failed");
-      });
+      .catch(err => alert(err.response?.data || "User creation failed"));
   };
 
   const logout = () => {
@@ -146,19 +147,16 @@ function Dashboard({ setLoggedIn }) {
         <button className="logout" onClick={logout}>Logout</button>
       </div>
 
-      {/* ✅ SUMMARY ONLY FOR ANALYST + ADMIN */}
       {(role === "ROLE_ANALYST" || role === "ROLE_ADMIN") && (
         <div className="cards">
           <div className="card income">
             <h3>Income</h3>
             <p>₹{summary.income}</p>
           </div>
-
           <div className="card expense">
             <h3>Expense</h3>
             <p>₹{summary.expense}</p>
           </div>
-
           <div className="card balance">
             <h3>Balance</h3>
             <p>₹{summary.balance}</p>
@@ -166,7 +164,32 @@ function Dashboard({ setLoggedIn }) {
         </div>
       )}
 
-      {/* ✅ ADMIN ONLY */}
+      {/* FILTER UI */}
+      <div className="form">
+        <h3>Filter Records</h3>
+
+        <select onChange={(e) => setFilterType(e.target.value)}>
+          <option value="">Select Type</option>
+          <option value="INCOME">Income</option>
+          <option value="EXPENSE">Expense</option>
+        </select>
+        <button onClick={filterByType}>Filter</button>
+
+        <input
+          placeholder="Category"
+          value={filterCategory}
+          onChange={(e) => setFilterCategory(e.target.value)}
+        />
+        <button onClick={filterByCategory}>Filter</button>
+
+        <input type="date" onChange={(e) => setStartDate(e.target.value)} />
+        <input type="date" onChange={(e) => setEndDate(e.target.value)} />
+        <button onClick={filterByDate}>Filter</button>
+
+        <button onClick={fetchData}>Reset</button>
+      </div>
+
+      {/* ADMIN */}
       {role === "ROLE_ADMIN" && (
         <>
           <div className="form">
