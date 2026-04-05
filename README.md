@@ -62,4 +62,10 @@ It supports role-based access control and financial data management.
 
 ---
 
+<img width="1919" height="906" alt="image" src="https://github.com/user-attachments/assets/33ac7bb1-c2dd-4089-a1ca-2b99f5a0c472" />
+
+<img width="1918" height="970" alt="image" src="https://github.com/user-attachments/assets/ca691814-0f90-4cac-9b31-c6e139d840ad" />
+
+
+
 ## 📁 Project Structure
