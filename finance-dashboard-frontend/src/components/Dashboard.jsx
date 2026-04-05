@@ -11,7 +11,7 @@ function Dashboard({ setLoggedIn }) {
     balance: 0
   });
 
-  // ✅ FILTER STATES
+  //  FILTER STATES
   const [filterType, setFilterType] = useState("");
   const [filterCategory, setFilterCategory] = useState("");
   const [startDate, setStartDate] = useState("");
@@ -30,7 +30,7 @@ function Dashboard({ setLoggedIn }) {
 
   const role = localStorage.getItem("role");
 
-  // ✅ FETCH DATA
+  //  FETCH DATA
   const fetchData = () => {
     API.get("/records")
       .then(res => setRecords(res.data))
@@ -43,7 +43,7 @@ function Dashboard({ setLoggedIn }) {
       .catch(err => alert(err.response?.data || "Error fetching summary"));
   };
 
-  // ✅ FILTER FUNCTIONS (FIXED POSITION)
+  //  FILTER FUNCTIONS (FIXED POSITION)
   const filterByType = () => {
     API.get(`/records/filter/type?type=${filterType}`)
       .then(res => setRecords(res.data))
@@ -69,7 +69,7 @@ function Dashboard({ setLoggedIn }) {
     }
   }, []);
 
-  // ✅ ADD / UPDATE
+  //  ADD / UPDATE
   const saveRecord = () => {
     if (!amount || !category) {
       alert("Amount and Category required");

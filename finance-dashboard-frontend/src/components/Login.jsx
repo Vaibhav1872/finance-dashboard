@@ -22,7 +22,7 @@ function Login({ setLoggedIn }) {
 
           const uname = username.toLowerCase();
 
-          // ✅ FIXED ROLE LOGIC (IMPORTANT)
+          
           if (uname.includes("admin")) {
             localStorage.setItem("role", "ROLE_ADMIN");
           } else if (uname.includes("analyst")) {
@@ -34,7 +34,7 @@ function Login({ setLoggedIn }) {
           localStorage.setItem("loggedIn", "true");
           setLoggedIn(true);
 
-          // ✅ ensure UI updates immediately
+         
           window.location.reload();
 
         } else {
