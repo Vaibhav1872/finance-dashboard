@@ -19,17 +19,17 @@ public interface FinancialRecordRepository extends JpaRepository<FinancialRecord
 
     List<FinancialRecord> findByUserAndRecordDateBetween(User user, LocalDate start, LocalDate end);
 
-    // ✅ GLOBAL SUMMARY
+   
     @Query("SELECT COALESCE(SUM(r.amount), 0) FROM FinancialRecord r WHERE r.recordType = 'INCOME'")
     Double getTotalIncome();
 
     @Query("SELECT COALESCE(SUM(r.amount), 0) FROM FinancialRecord r WHERE r.recordType = 'EXPENSE'")
     Double getTotalExpense();
 
-    // ✅ ADD THIS (IMPORTANT)
+  
     @Query("SELECT r.category, SUM(r.amount) FROM FinancialRecord r GROUP BY r.category")
     List<Object[]> getCategorySummary();
 
-    // ✅ ADD THIS (IMPORTANT)
+   
     List<FinancialRecord> findTop5ByOrderByRecordDateDesc();
 }

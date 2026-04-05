@@ -14,7 +14,6 @@ public class DashboardService {
     @Autowired
     private FinancialRecordRepository repo;
 
-    // ✅ GLOBAL SUMMARY (FIXED)
     public Map<String, Object> getSummary() {
 
         Double income = repo.getTotalIncome();
@@ -28,7 +27,7 @@ public class DashboardService {
         return data;
     }
 
-    // ✅ GLOBAL CATEGORY SUMMARY
+   
     public List<Map<String, Object>> getCategorySummary() {
 
         List<Object[]> rows = repo.getCategorySummary();
@@ -44,7 +43,7 @@ public class DashboardService {
         return result;
     }
 
-    // ✅ GLOBAL RECENT RECORDS
+ 
     public List<FinancialRecord> getRecentRecords() {
         return repo.findTop5ByOrderByRecordDateDesc();
     }

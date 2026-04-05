@@ -20,7 +20,7 @@ public class RecordService {
         return recordRepo.save(record);
     }
 
-    // ✅ FIX: SHOW ALL RECORDS FOR ALL USERS
+    
     public List<FinancialRecord> getUserRecords(User user) {
         return recordRepo.findAll();
     }
