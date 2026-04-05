@@ -62,7 +62,7 @@ It supports role-based access control and financial data management.
 
 ---
 ### 🔹 summary
-<img width="1919" height="906" alt="image" src="https://github.com/user-attachments/assets/33ac7bb1-c2dd-4089-a1ca-2b99f5a0c472" />
+<img width="1919" height="975" alt="image" src="https://github.com/user-attachments/assets/27cdcc90-9439-4e17-9889-7d61c6ee2b23" />
 
 ### 🔹 Records
 
